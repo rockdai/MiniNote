@@ -34,6 +34,7 @@ var app = http.createServer(function handle(req, res) {
 
 var io = sio.listen(app);
 var currentContent = null;
+io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
 
   if (currentContent) {
