@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <title>Mini Note</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+      #editor { 
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="editor"></div>
+  </body>
+  <script src="http://cdn.staticfile.org/jquery/2.0.3/jquery.js"></script>
+  <script src="http://cdn.staticfile.org/ace/1.1.01/ace.js"></script>
+  <script src="http://cdn.staticfile.org/socket.io/0.9.16/socket.io.min.js"></script>
+  <script>
+    $(function ($) {
+
+      var socket = io.connect(window.location.origin);
+
+      var editor = ace.edit('editor');
+      editor.setTheme('ace/theme/monokai');
+      editor.setFontSize(14);
+
+      editor.getSession().setMode('ace/mode/sql');
+      editor.getSession().setUseSoftTabs(true);
+      editor.getSession().setUseWrapMode(true);
+
+      editor.commands.addCommand({
+        name: 'Save',
+        bindKey: {
+          win: 'Ctrl-S',
+          mac: 'Command-S',
+          sender: 'editor'
+        },
+        exec: function(env, args, request) {
+          socket.emit('writeStorage', { content: editor.getValue() });
+        }
+      });
+
+      socket.on('readStorage', function (data) {
+        data = data || {};
+        var content = data.content;
+        if (!content) {
+          return false;
+        }
+        editor.setValue(content);
+      });
+
+    });
+  </script>
+</html>
