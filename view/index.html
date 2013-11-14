@@ -47,10 +47,7 @@
 
       socket.on('readStorage', function (data) {
         data = data || {};
-        var content = data.content;
-        if (!content) {
-          return false;
-        }
+        var content = data.content || '';
         editor.setValue(content);
       });
 
