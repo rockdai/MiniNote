@@ -1,7 +1,7 @@
 {
   "name": "MiniNote",
-  "description": "A piece of notepaper that can sync content between different devices.",
-  "version": "0.0.1",
+  "description": "Sync content between different devices.",
+  "version": "0.0.2",
   "keywords": ["note", "sync"],
   "author": "RockDai <rockdai@qq.com>",
   "scripts": {
@@ -14,7 +14,6 @@
     }
   },
   "dependencies": {
-    "qnfs": "0.0.1",
     "socket.io": "0.9.16"
   },
   "devDependencies": {
@@ -26,5 +25,5 @@
     "blanket": "*"
   },
   "main": "dispatch.js",
-  "engines": { "node": ">= 0.8.0" }
+  "engines": { "node": ">= 0.10.0" }
 }
