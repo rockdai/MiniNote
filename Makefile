@@ -1,30 +1,32 @@
 TESTS = $(shell ls -S `find test -type f -name "*.test.js" -print`)
+REPORTER = spec
 TIMEOUT = 30000
 MOCHA_OPTS =
-REPORTER = tap
-NPM_REGISTRY = --registry=http://registry.cnpmjs.org
-NPM_INSTALL_PRODUCTION = PYTHON=`which python2.7` NODE_ENV=production npm install $(NPM_REGISTRY)
-NPM_INSTALL_TEST = PYTHON=`which python2.7` NODE_ENV=test npm install $(NPM_REGISTRY)
+REGISTRY = --registry=http://registry.npm.taobao.org
 
 install:
-	@$(NPM_INSTALL_PRODUCTION)
+	@npm install $(REGISTRY)
 
-install-test:
-	@$(NPM_INSTALL_TEST)
+pretest:
 
-test: install-test
-	@NODE_ENV=test node_modules/mocha/bin/mocha \
-		--bail --reporter $(REPORTER) --timeout $(TIMEOUT) $(MOCHA_OPTS) $(TESTS)
+test: install pretest
+	@NODE_ENV=test ./node_modules/.bin/mocha \
+		--bail \
+		--reporter $(REPORTER) \
+		--timeout $(TIMEOUT) \
+		--require should \
+		$(MOCHA_OPTS) \
+		$(TESTS)
 
-test-cov:
-	@rm -f coverage.html
-	@$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=html-cov > coverage.html
-	@ls -lh coverage.html
+test-cov cov: install pretest
+	@NODE_ENV=test ./node_modules/.bin/istanbul cover \
+		--preserve-comments \
+		./node_modules/.bin/_mocha \
+		-- -u exports \
+		--reporter $(REPORTER) \
+		--timeout $(TIMEOUT) \
+		--require should \
+		$(MOCHA_OPTS) \
+		$(TESTS)
 
-test-all: test test-cov
-
-clean:
-	@rm -rf coverage.html node_modules
-
-.PHONY: install install-test test test-cov clean
-	
+.PHONY: test
