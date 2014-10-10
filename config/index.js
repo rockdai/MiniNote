@@ -25,9 +25,9 @@ var config = {
   logdir: path.join(root, '.tmp', 'logs'),
   viewCache: false,
 
-  ots: {
-    accessID: '',
-    accessKey: ''
+  oss: {
+    accessKeyId: '',
+    accessKeySecret: ''
   }
 };
 

@@ -22,3 +22,4 @@ nohup.out
 .lock-wscript
 coverage.html
 .DS_Store
+config/config.js

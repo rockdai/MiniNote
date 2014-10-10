@@ -8,10 +8,12 @@
  * Module dependencies.
  */
 var pages = require('./controllers/pages');
+var content = require('./controllers/content');
 
 module.exports = function (router) {
 
-  router.get('/', pages.home);
+  router.get('/:key?', pages.home);
+  router.post('/content', content.create);
 
   return router;
 };
