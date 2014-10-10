@@ -33,9 +33,15 @@
         left: 0;
       }
       .url-input {
-        width: 350px !important;
+        width: 370px !important;
         height: 22px;
         padding: 1px 3px;
+      }
+      .form-control, .form-control:focus {
+        box-shadow: none;
+        -webkit-transition: none;
+        transition: none;
+        border-color: #ccc;
       }
       .generate-form {
         margin-left: 10px;
@@ -48,7 +54,7 @@
     <header>
       <form class="form-inline generate-form" role="form">
         <button type="submit" class="btn btn-default btn-xs gen-btn" title="Command-S">保存</button>
-        <input class="form-control input-sm url-input" type="text" placeholder="点击保存生成URL">
+        <input class="form-control input-sm url-input" type="text" placeholder="点击保存生成URL" onclick="this.select()" readonly="readonly">
         <div class="msg"></div>
       </form>
     </header>
@@ -90,7 +96,9 @@
             if (textStatus === 'success' && status === 200) {
               if (data.key) {
                 msgNode.html('保存成功');
-                urlInputNode.val(getUrl(data.key));
+                var newUrl = getUrl(data.key);
+                urlInputNode.val(newUrl);
+                history.pushState({}, '', newUrl);
               }
               return false;
             }
