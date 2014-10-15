@@ -1,3 +1,3 @@
 # MiniNote
 
-Sync content between different devices.
+Easier way to share contents to others.
